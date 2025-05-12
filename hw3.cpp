@@ -41,4 +41,36 @@ void printMenu() {
     printf("------------------------------------\n");
     printf("Choose an option: ");
 }
+//隨機產生 10 個已被預訂的座位，並顯示座位表
+int seats[SIZE][SIZE] = {0}; // 0: free space, 1: booked(*), 2: suggestion(@)
+
+void randomBookedSeats(int count) {
+    srand(time(NULL));
+    int r, c, booked = 0;
+
+    while (booked < count) {
+        r = rand() % SIZE;
+        c = rand() % SIZE;
+        if (seats[r][c] == 0) {
+            seats[r][c] = 1;
+            booked++;
+        }
+    }
+}
+
+void showSeats() {
+    printf(" \\123456789\n");
+    for (int i = SIZE - 1; i >= 0; i--) {
+        printf("%d", i + 1);
+        for (int j = 0; j < SIZE; j++) {
+            if (seats[i][j] == 1)
+                printf("*");
+            else if (seats[i][j] == 2)
+                printf("@");
+            else
+                printf("-");
+        }
+        printf("\n");
+    }
+}
 
