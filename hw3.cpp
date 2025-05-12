@@ -1,23 +1,25 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
+#include <string.h>
 
 #define PASSWORD 2025
-#include <time.h>
-
 #define SIZE 9
-#include <string.h>
-//個人風格畫面設計 
+
+int seats[SIZE][SIZE] = {0}; // 0: free space, 1: booked(*), 2: suggest(@)
+
+// password
 int checkPassword() {
     int input, tries = 0;
 
     printf("************************************\n");
-    printf("*     Welcome to the Booking System!      *\n");
+    printf("*     Welcome to the Booking!      *\n");
     printf("*         Designed by E1B24          *\n");
-    printf("*                                    *\n");
+    printf("*      THe  Seat System     *\n");
     printf("************************************\n");
 
     while (tries < 3) {
-        printf("Please enter 4-digit password: ");//set the password input maximum,if incorrect 3 times to exit the system.
+        printf("Please enter 4-digit password: ");
         scanf("%d", &input);
 
         if (input == PASSWORD) {
@@ -32,7 +34,8 @@ int checkPassword() {
     printf("Too many failed attempts. Exiting...\n");
     return 0;
 }
-//主選單 
+
+// menu
 void printMenu() {
     printf("----------[Booking System]----------\n");
     printf("| a. Available seats               |\n");
@@ -42,9 +45,8 @@ void printMenu() {
     printf("------------------------------------\n");
     printf("Choose an option: ");
 }
-//隨機產生 10 個已被預訂的座位，並顯示座位表
-int seats[SIZE][SIZE] = {0}; // 0: free space, 1: booked(*), 2: suggestion(@)
 
+// random seat
 void randomBookedSeats(int count) {
     srand(time(NULL));
     int r, c, booked = 0;
@@ -74,7 +76,8 @@ void showSeats() {
         printf("\n");
     }
 }
-//電腦自動安排座位，並讓使用者確認
+
+// clear Suggestions seat
 void clearSuggestions() {
     for (int i = 0; i < SIZE; i++)
         for (int j = 0; j < SIZE; j++)
@@ -82,10 +85,12 @@ void clearSuggestions() {
                 seats[i][j] = 0;
 }
 
+// check the seat is avaliable or not
 int isAvailable(int r, int c) {
     return r >= 0 && r < SIZE && c >= 0 && c < SIZE && seats[r][c] == 0;
 }
 
+// random to set the seat
 void suggestSeats(int count) {
     clearSuggestions();
     int found = 0;
@@ -144,7 +149,8 @@ void suggestSeats(int count) {
                     seats[i][j] = 1;
     }
 }
-//使用者自行輸入座位
+
+// user input mainly
 void chooseSeatsManually() {
     int n, r, c;
     char input[10];
@@ -172,14 +178,15 @@ void chooseSeatsManually() {
     }
 
     showSeats();
-    printf("Press any key to confirm your selection...\n");
-    getchar(); getchar(); // 模擬 getch() 效果
+    printf("Press Enter to confirm your selection...");
+    getchar(); getchar(); // wait for Enter
     for (int i = 0; i < SIZE; i++)
         for (int j = 0; j < SIZE; j++)
             if (seats[i][j] == 2)
                 seats[i][j] = 1;
 }
-//詢問是否重新輸入或結束程式
+
+// continue or not
 int askContinue() {
     char ch;
     printf("Continue? (y/n): ");
@@ -194,3 +201,54 @@ int askContinue() {
         return askContinue();
     }
 }
+
+// main
+int main() {
+    char option;
+
+    if (!checkPassword())
+        return 0;
+
+    randomBookedSeats(10);
+
+    while (1) {
+#ifdef _WIN32
+        system("cls");
+#else
+        system("clear");
+#endif
+        printMenu();
+        scanf(" %c", &option);
+#ifdef _WIN32
+        system("cls");
+#else
+        system("clear");
+#endif
+
+        switch (option) {
+            case 'a':
+                showSeats();
+                printf("Press Enter to go back to menu...");
+                getchar(); getchar();
+                break;
+            case 'b': {
+                int n;
+                printf("How many seats (1~4)? ");
+                scanf("%d", &n);
+                suggestSeats(n);
+                break;
+            }
+            case 'c':
+                chooseSeatsManually();
+                break;
+            case 'd':
+                if (!askContinue()) return 0;
+                break;
+            default:
+                printf("Invalid option.\n");
+                break;
+        }
+    }
+    return 0;
+}
+
