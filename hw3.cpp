@@ -5,6 +5,7 @@
 #include <time.h>
 
 #define SIZE 9
+#include <string.h>
 //個人風格畫面設計 
 int checkPassword() {
     int input, tries = 0;
@@ -143,3 +144,39 @@ void suggestSeats(int count) {
                     seats[i][j] = 1;
     }
 }
+//使用者自行輸入座位
+void chooseSeatsManually() {
+    int n, r, c;
+    char input[10];
+
+    clearSuggestions();
+    printf("How many seats do you want to choose (1~4)? ");
+    scanf("%d", &n);
+
+    for (int i = 0; i < n; i++) {
+        while (1) {
+            printf("Enter seat (e.g., 3-5): ");
+            scanf("%s", input);
+            if (sscanf(input, "%d-%d", &r, &c) != 2 || r < 1 || r > 9 || c < 1 || c > 9) {
+                printf("Invalid format!\n");
+                continue;
+            }
+            r--; c--;
+            if (seats[r][c] != 0) {
+                printf("Seat already taken!\n");
+                continue;
+            }
+            seats[r][c] = 2;
+            break;
+        }
+    }
+
+    showSeats();
+    printf("Press any key to confirm your selection...\n");
+    getchar(); getchar(); // 模擬 getch() 效果
+    for (int i = 0; i < SIZE; i++)
+        for (int j = 0; j < SIZE; j++)
+            if (seats[i][j] == 2)
+                seats[i][j] = 1;
+}
+
