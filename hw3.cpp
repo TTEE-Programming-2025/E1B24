@@ -2,7 +2,10 @@
 #include <stdlib.h>
 
 #define PASSWORD 2025
+#include <time.h>
 
+#define SIZE 9
+//個人風格畫面設計 
 int checkPassword() {
     int input, tries = 0;
 
@@ -27,5 +30,15 @@ int checkPassword() {
 
     printf("Too many failed attempts. Exiting...\n");
     return 0;
+}
+//主選單 
+void printMenu() {
+    printf("----------[Booking System]----------\n");
+    printf("| a. Available seats               |\n");
+    printf("| b. Arrange for you               |\n");
+    printf("| c. Choose by yourself            |\n");
+    printf("| d. Exit                          |\n");
+    printf("------------------------------------\n");
+    printf("Choose an option: ");
 }
 
