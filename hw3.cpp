@@ -179,4 +179,18 @@ void chooseSeatsManually() {
             if (seats[i][j] == 2)
                 seats[i][j] = 1;
 }
-
+//詢問是否重新輸入或結束程式
+int askContinue() {
+    char ch;
+    printf("Continue? (y/n): ");
+    scanf(" %c", &ch);
+    if (ch == 'y' || ch == 'Y')
+        return 1;
+    else if (ch == 'n' || ch == 'N') {
+        printf("Goodbye!\n");
+        return 0;
+    } else {
+        printf("Invalid input. Try again.\n");
+        return askContinue();
+    }
+}
