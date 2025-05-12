@@ -73,4 +73,73 @@ void showSeats() {
         printf("\n");
     }
 }
+//電腦自動安排座位，並讓使用者確認
+void clearSuggestions() {
+    for (int i = 0; i < SIZE; i++)
+        for (int j = 0; j < SIZE; j++)
+            if (seats[i][j] == 2)
+                seats[i][j] = 0;
+}
 
+int isAvailable(int r, int c) {
+    return r >= 0 && r < SIZE && c >= 0 && c < SIZE && seats[r][c] == 0;
+}
+
+void suggestSeats(int count) {
+    clearSuggestions();
+    int found = 0;
+
+    if (count <= 3) {
+        for (int i = 0; i < SIZE && !found; i++) {
+            for (int j = 0; j <= SIZE - count; j++) {
+                int ok = 1;
+                for (int k = 0; k < count; k++)
+                    if (!isAvailable(i, j + k)) ok = 0;
+
+                if (ok) {
+                    for (int k = 0; k < count; k++)
+                        seats[i][j + k] = 2;
+                    found = 1;
+                    break;
+                }
+            }
+        }
+    } else if (count == 4) {
+        for (int i = 0; i < SIZE && !found; i++) {
+            for (int j = 0; j <= SIZE - 4; j++) {
+                if (isAvailable(i, j) && isAvailable(i, j + 1) &&
+                    isAvailable(i, j + 2) && isAvailable(i, j + 3)) {
+                    for (int k = 0; k < 4; k++)
+                        seats[i][j + k] = 2;
+                    found = 1;
+                    break;
+                }
+            }
+        }
+
+        if (!found) {
+            for (int i = 0; i < SIZE - 1 && !found; i++) {
+                for (int j = 0; j < SIZE - 1; j++) {
+                    if (isAvailable(i, j) && isAvailable(i, j + 1) &&
+                        isAvailable(i + 1, j) && isAvailable(i + 1, j + 1)) {
+                        seats[i][j] = seats[i][j + 1] = 2;
+                        seats[i + 1][j] = seats[i + 1][j + 1] = 2;
+                        found = 1;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    showSeats();
+    printf("Are you satisfied with these seats? (y/n): ");
+    char ans;
+    scanf(" %c", &ans);
+    if (ans == 'y' || ans == 'Y') {
+        for (int i = 0; i < SIZE; i++)
+            for (int j = 0; j < SIZE; j++)
+                if (seats[i][j] == 2)
+                    seats[i][j] = 1;
+    }
+}
