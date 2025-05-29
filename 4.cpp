@@ -44,3 +44,19 @@ int main() {
     
     return 0;
 }
+// 顯示歡迎畫面
+void displayWelcomeScreen() {
+    clearScreen();
+    printf("\n\n");
+    printf("    ***************************************\n");
+    printf("    *                                     *\n");
+    printf("    *      歡迎使用學生成績管理系統      *\n");
+    printf("    *                                     *\n");
+    printf("    *                                     *\n");
+    printf("    *  設計者:  E1B24                *\n");
+    printf("    *  版本: 1.0                        *\n");
+    printf("    *  日期: 2025                       *\n");
+    printf("    *                                     *\n");
+    printf("    ***************************************\n");
+    printf("\n\n");
+}
