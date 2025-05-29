@@ -96,3 +96,41 @@ bool checkPassword() {
 void clearScreen() {
     system("cls || clear");
 }
+// 顯示主選單
+void displayMainMenu() {
+    clearScreen();
+    printf("\n------------[Grade System]----------\n");
+    printf("| a. Enter student grades          |\n");
+    printf("| b. Display student grades        |\n");
+    printf("| c. Search for student grades     |\n");
+    printf("| d. Grade ranking                |\n");
+    printf("| e. Exit system                   |\n");
+    printf("------------------------------------\n");
+    
+    printf("請選擇功能 (a-e): ");
+    char choice;
+    scanf(" %c", &choice);
+    
+    switch (tolower(choice)) {
+        case 'a':
+            enterGrades();
+            break;
+        case 'b':
+            displayAllGrades();
+            break;
+        case 'c':
+            searchStudent();
+            break;
+        case 'd':
+            displayRanking();
+            break;
+        case 'e':
+            exitSystem();
+            break;
+        default:
+            printf("無效的選擇，請重新輸入！\n");
+            printf("按下任意鍵繼續...");
+            getch();
+            break;
+    }
+}
