@@ -107,7 +107,7 @@ void displayMainMenu() {
     printf("| e. Exit system                   |\n");
     printf("------------------------------------\n");
     
-    printf("請選擇功能 (a-e): ");
+    printf("請選擇要使用的功能 (a-e): ");
     char choice;
     scanf(" %c", &choice);
     
@@ -305,3 +305,51 @@ void displayRanking() {
     for (int i = 0; i < studentCount; i++) {
         ranking[i] = i;
     }
+       // 使用冒泡排序按平均成績排序
+    for (int i = 0; i < studentCount - 1; i++) {
+        for (int j = 0; j < studentCount - i - 1; j++) {
+            if (students[ranking[j]].average < students[ranking[j + 1]].average) {
+                int temp = ranking[j];
+                ranking[j] = ranking[j + 1];
+                ranking[j + 1] = temp;
+            }
+        }
+    }
+    
+    printf("----------------------------------------\n");
+    printf("排名\t姓名\t\t學號\t\t平均\n");
+    printf("----------------------------------------\n");
+    
+    for (int i = 0; i < studentCount; i++) {
+        printf("%d\t%-10s\t%d\t\t%.1f\n", 
+               i + 1, 
+               students[ranking[i]].name, 
+               students[ranking[i]].id, 
+               students[ranking[i]].average);
+    }
+    
+    printf("\n按下任意鍵返回主選單...");
+    getch();
+}
+
+// 退出系統
+void exitSystem() {
+    char confirm;
+    
+    while (1) {
+        clearScreen();
+        printf("\n確定離開？ (y/n): ");
+        scanf(" %c", &confirm);
+        
+        if (tolower(confirm) == 'y') {
+            printf("\n感謝使用學生成績管理系統，再見！\n");
+            exit(0);
+        } else if (tolower(confirm) == 'n') {
+            return; // 返回主選單
+        } else {
+            printf("無效的輸入，請輸入 'y' 或 'n'。\n");
+            printf("按下任意鍵繼續...");
+            getch();
+        }
+    }
+}
