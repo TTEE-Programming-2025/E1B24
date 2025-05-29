@@ -134,3 +134,174 @@ void displayMainMenu() {
             break;
     }
 }
+// 輸入學生成績
+void enterGrades() {
+    clearScreen();
+    printf("\n--- 輸入學生成績 ---\n");
+    
+    int n;
+    while (1) {
+        printf("請輸入學生人數 (5-10): ");
+        if (scanf("%d", &n) != 1) {
+            printf("輸入錯誤，請輸入數字！\n");
+            while (getchar() != '\n');
+            continue;
+        }
+        
+        if (n < 5 || n > 10) {
+            printf("人數必須在5到10之間！\n");
+        } else {
+            break;
+        }
+    }
+    
+    studentCount = n;
+    
+    for (int i = 0; i < n; i++) {
+        printf("\n學生 #%d:\n", i + 1);
+        
+        // 輸入姓名
+        printf("姓名: ");
+        scanf("%s", students[i].name);
+        
+        // 輸入學號
+        while (1) {
+            printf("學號 (6位數字): ");
+            if (scanf("%d", &students[i].id) != 1) {
+                printf("輸入錯誤，請輸入數字！\n");
+                while (getchar() != '\n');
+                continue;
+            }
+            
+            if (students[i].id < 100000 || students[i].id > 999999) {
+                printf("學號必須是6位數字！\n");
+            } else {
+                break;
+            }
+        }
+        
+        // 輸入數學成績
+        while (1) {
+            printf("數學成績 (0-100): ");
+            if (scanf("%d", &students[i].math) != 1) {
+                printf("輸入錯誤，請輸入數字！\n");
+                while (getchar() != '\n');
+                continue;
+            }
+            
+            if (students[i].math < 0 || students[i].math > 100) {
+                printf("成績必須在0到100之間！\n");
+            } else {
+                break;
+            }
+        }
+        
+        // 輸入物理成績
+        while (1) {
+            printf("物理成績 (0-100): ");
+            if (scanf("%d", &students[i].physics) != 1) {
+                printf("輸入錯誤，請輸入數字！\n");
+                while (getchar() != '\n');
+                continue;
+            }
+            
+            if (students[i].physics < 0 || students[i].physics > 100) {
+                printf("成績必須在0到100之間！\n");
+            } else {
+                break;
+            }
+        }
+        
+        // 輸入英文成績
+        while (1) {
+            printf("英文成績 (0-100): ");
+            if (scanf("%d", &students[i].english) != 1) {
+                printf("輸入錯誤，請輸入數字！\n");
+                while (getchar() != '\n');
+                continue;
+            }
+            
+            if (students[i].english < 0 || students[i].english > 100) {
+                printf("成績必須在0到100之間！\n");
+            } else {
+                break;
+            }
+        }
+        
+        // 計算平均成績
+        students[i].average = (students[i].math + students[i].physics + students[i].english) / 3.0f;
+    }
+    
+    printf("\n所有學生成績輸入完成！\n");
+    printf("按下任意鍵返回主選單...");
+    getch();
+}
+
+// 顯示所有學生成績
+void displayAllGrades() {
+    clearScreen();
+    printf("\n--- 所有學生成績 ---\n");
+    printf("------------------------------------------------------------\n");
+    printf("姓名\t\t學號\t\t數學\t物理\t英文\t平均\n");
+    printf("------------------------------------------------------------\n");
+    
+    for (int i = 0; i < studentCount; i++) {
+        printf("%-10s\t%d\t%d\t%d\t%d\t%.1f\n", 
+               students[i].name, 
+               students[i].id, 
+               students[i].math, 
+               students[i].physics, 
+               students[i].english, 
+               students[i].average);
+    }
+    
+    printf("\n按下任意鍵返回主選單...");
+    getch();
+}
+// 搜尋學生
+void searchStudent() {
+    clearScreen();
+    printf("\n--- 搜尋學生成績 ---\n");
+    
+    char searchName[50];
+    printf("請輸入要搜尋的學生姓名: ");
+    scanf("%s", searchName);
+    
+    bool found = false;
+    
+    for (int i = 0; i < studentCount; i++) {
+        if (strcmp(students[i].name, searchName) == 0) {
+            printf("\n找到學生記錄:\n");
+            printf("------------------------------------------------------------\n");
+            printf("姓名\t\t學號\t\t數學\t物理\t英文\t平均\n");
+            printf("------------------------------------------------------------\n");
+            printf("%-10s\t%d\t%d\t%d\t%d\t%.1f\n", 
+                   students[i].name, 
+                   students[i].id, 
+                   students[i].math, 
+                   students[i].physics, 
+                   students[i].english, 
+                   students[i].average);
+            found = true;
+            break;
+        }
+    }
+    
+    if (!found) {
+        printf("\n找不到姓名為 \"%s\" 的學生記錄。\n", searchName);
+    }
+    
+    printf("\n按下任意鍵返回主選單...");
+    getch();
+}
+
+// 顯示成績排名
+void displayRanking() {
+    clearScreen();
+    printf("\n--- 學生成績排名 ---\n");
+    
+    // 建立排名陣列
+    int ranking[MAX_STUDENTS];
+    for (int i = 0; i < studentCount; i++) {
+        ranking[i] = i;
+    }
